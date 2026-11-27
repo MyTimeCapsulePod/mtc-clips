@@ -115,3 +115,16 @@ Use three channels: Instagram (Reel, shared to feed), the Facebook page "My Time
 **Re-made clips:** give each new version a new filename (v2, v3) so Buffer fetches the new file instead of a cached copy, and remove the superseded file from the repo.
 
 **Video link for Buffer:** Buffer needs a public, direct link to the MP4. The clips are stored in the GitHub repo `MyTimeCapsulePod/mtc-clips` under `clips/`, and the link takes the form `https://raw.githubusercontent.com/MyTimeCapsulePod/mtc-clips/main/clips/<file>.mp4`. If you can't upload there, give the person the MP4 and ask them to attach it to the drafts in Buffer themselves.
+
+
+## Lessons from Dig Ep. 28 (Rosie Holt)
+
+- **Tail:** end every clip at least 0.5 s after the last wanted word. make_clip.py fades the audio out over the last 0.3 s, so a clip that ends right on the word loses it. Check by transcribing the last 3 seconds and looking at the energy of the final second.
+- **Rebuilding an active-speaker Dig clip:** use `scripts/build_active_speaker_source.py` (keeps jump cuts, levels and gates each person's track, writes an assembled video with the mixed audio) then run make_clip.py on it with `--layout A --dig`. Transcribe each track with `scripts/transcribe_track.py` first.
+- **Don't drop quiet or long words:** gating by word windows must keep stretched words, and short replies from Mike ("Yes. I know. Oh God.") must stay audible and captioned. Re-read the final clip transcript against what John expects before sending.
+- **Name box:** layout A keeps the guest's name box on screen even when the active-speaker video cuts to Mike. This is a known limitation, John hasn't minded it.
+- **Dropbox files:** get recordings with the Dropbox connector's download_link (temporary link, curl it straight away, ~15 min). Don't use the saved app refresh token; the permission check blocks it.
+- **GitHub repo access:** in a new chat the clips repo is NOT attached with write access. Call add_repo for MyTimeCapsulePod/mtc-clips with access "push" at the start of any clip job (John approves), then clone or push. Without it, pushes get a 403 and Buffer can't be given a video link.
+- **Captions (John's chosen style for The Dig, Nov 2026):** keep them generic and exciting rather than quoting the clip: an emoji opener, "<Guest> is back on The Dig!", a line on what the episode covers taken from the episode description (e.g. revisits her old time capsule and says where she wants it buried), "Plus Mike and John dig into your emails and voice memos", then "The Dig Ep. NN, out now." Say "Mike and John", never "his producer son John". Facebook uses plain names and the episode link; X uses @handles (emoji first, @MyTCpod, link); Instagram uses @handles and "Link in bio".
+- **Handles:** Rosie Holt Instagram @rosieisaholt, X @RosieisaHolt (John supplied them). The guest's Instagram handle is also in the Ep. description John and Claude write (search past chats "episode description").
+- **Same-day edits:** to change a scheduled post's video or caption use edit_post with assets/text only (omit mode and dueAt so the time stays).
